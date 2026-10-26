@@ -13,7 +13,7 @@ def extract_title(markdown):
         
     raise Exception("not found")
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path,basepath):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
     f = open(from_path,"r")
     content = f.read()
@@ -26,6 +26,8 @@ def generate_page(from_path, template_path, dest_path):
     title = extract_title(content)
     text = template.replace("{{ Title }}",title)
     text = text.replace("{{ Content }}",page)
+    text = text.replace('href="/',f'href="{basepath}')
+    text = text.replace('src="/',f'src="{basepath}')
     folder = os.path.dirname(dest_path)
     os.makedirs(folder, exist_ok=True)
     f = open(dest_path,"w")
